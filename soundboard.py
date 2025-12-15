@@ -1,5 +1,11 @@
 # soundboard
 import sys
+if sys.stdout is None:
+    import io
+    sys.stdout = io.StringIO()
+if sys.stderr is None:
+    import io
+    sys.stderr = io.StringIO()
 import os
 import json
 import threading
@@ -18,7 +24,10 @@ import scipy.signal
 
 # Note to self: maybe want to use librosa later. idk
 
-CONFIG_FILE = "soundboard_config.json"
+# --- CONFIG FILE IN APPDATA ---
+APP_NAME = "TomMustBe12Soundboard"
+CONFIG_FILE = os.path.join(os.getenv('APPDATA'), APP_NAME, "soundboard_config.json")
+os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
 
 # Load config or create default
 if os.path.exists(CONFIG_FILE):
